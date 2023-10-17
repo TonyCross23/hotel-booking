@@ -17,6 +17,17 @@ app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/hotel", hotelRoute);
 
+app.use((req, res, next) => {
+  const errorStatus = err.status || 500;
+  const errorMessage = err.message || "something went wrong!";
+  return res.status(errorStatus).json({
+    success: false,
+    status: errorStatus,
+    message: errorMessage,
+    stack: err.stack,
+  });
+});
+
 // port
 const port = process.env.PORT || 5000;
 const monclient = process.env.MONGO_URL;
